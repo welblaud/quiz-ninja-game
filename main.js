@@ -10,11 +10,11 @@ const view = {
   question: document.getElementById('question'),
   result: document.getElementById('result'),
   info: document.getElementById('info'),
-  // This function grabs the element and replacec its
+  // This function grabs the element and replaces its
   // content and attributes according to new values passed.
-  render( target, content, attributes) {
-    for( const key in attributes) {
-      target.setAttribute(key, attributes[key]);
+  render( target, content, attributes ) {
+    for( const key in attributes ) {
+      target.setAttribute( key, attributes[key] );
     }
     target.innerHTML = content;
   }
