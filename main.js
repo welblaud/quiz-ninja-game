@@ -10,6 +10,7 @@ const view = {
   question: document.getElementById('question'),
   result: document.getElementById('result'),
   info: document.getElementById('info'),
+  start: document.getElementById('start'),
   // This function grabs the element and replaces its
   // content and attributes according to new values passed.
   render( target, content, attributes ) {
@@ -17,6 +18,12 @@ const view = {
       target.setAttribute( key, attributes[key] );
     }
     target.innerHTML = content;
+  },
+  show( element ) {
+    element.style.display = 'block';
+  },
+  hide( element ) {
+    element.style.display = 'none';
   }
 
 };
@@ -26,6 +33,8 @@ const game = {
   start( quiz ) {
     this.questions = [...quiz];
     this.score = 0; // initialize score
+
+    view.hide(view.start); // hiding the starting button
   
     // Iterating over questions, main game loop
     for ( const question of this.questions ) {
@@ -57,9 +66,10 @@ const game = {
   },
 
   gameOver() {
+    view.show(view.start); // showing the starting button again
     view.render( view.info, `Game Over, you scored ${this.score} point${this.score !== 1 ? 's' : ''}.` );
   }
 }
 
 // Staring the game.
-game.start( quiz );
+view.start.addEventListener( 'click', () => game.start( quiz ), false );
