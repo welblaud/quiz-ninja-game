@@ -11,6 +11,7 @@ const view = {
   result: document.getElementById('result'),
   info: document.getElementById('info'),
   start: document.getElementById('start'),
+
   // This function grabs the element and replaces its
   // content and attributes according to new values passed.
   render( target, content, attributes ) {
