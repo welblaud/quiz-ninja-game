@@ -1,13 +1,32 @@
 'use-strict';
 
-const form = document.forms[0];
-const input = form.elements.searchInput;
-input.addEventListener( 'focus', () => console.log('focused') );
-input.addEventListener( 'blur', () => console.log('blurred') );
-input.addEventListener( 'change', () => console.log('changed') );
+const form = document.forms['hero'];
+form.addEventListener('submit', makeHero, false);
 
-form.addEventListener( 'submit', search, false );
-function search(event) {
-  alert( `You Searched for: ${input.value}` );
-  event.preventDefault();
+function makeHero(event) {
+
+  event.preventDefault(); // prevent the form from being submitted
+
+  const hero = {}; // create an empty object, like new Object()
+
+  hero.name = form.heroName.value; // create a name property based on the input field's value
+  hero.realName = form.realName.value; // secret name taken from the password input field
+  hero.powers = [];
+  /*
+  for (let i = 0; i < form.powers.length; i++) {
+    if (form.powers[i].checked) {
+      hero.powers.push(form.powers[i].value);
+    }
+  }
+  */
+  // refactored!
+  hero.powers = [...form.powers].filter(box => box.checked).map(box => box.value);
+  hero.category = form.category.value;
+  hero.age = form.age.value;
+
+  alert(JSON.stringify(hero)); // convert object to JSON string and display in alert dialog
+  return hero;
+
 }
+
+
