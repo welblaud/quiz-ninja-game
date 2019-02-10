@@ -23,6 +23,8 @@ function makeHero(event) {
   hero.powers = [...form.powers].filter(box => box.checked).map(box => box.value);
   hero.category = form.category.value;
   hero.age = form.age.value;
+  hero.city = form.city.value;
+  hero.origin = form.origin.value;
 
   alert(JSON.stringify(hero)); // convert object to JSON string and display in alert dialog
   return hero;
