@@ -3,6 +3,8 @@
 const form = document.forms['hero'];
 form.addEventListener('submit', makeHero, false);
 
+form.addEventListener('submit', validate, false);
+
 function makeHero(event) {
 
   event.preventDefault(); // prevent the form from being submitted
@@ -28,7 +30,14 @@ function makeHero(event) {
 
   alert(JSON.stringify(hero)); // convert object to JSON string and display in alert dialog
   return hero;
-
 }
 
+function validate(event) {
 
+  const firstletter = form.heroName.value[0];
+  if ( firstletter.toUpperCase() == 'X' ) {
+    event.preventDefault();
+    alert( 'Your name is not allowed to start with X!' );
+  }
+
+}
