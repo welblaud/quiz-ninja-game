@@ -6,11 +6,12 @@ const quiz = [
 
 const view = {
 
-  score: document.querySelector('#score strong'),
-  question: document.getElementById('question'),
-  result: document.getElementById('result'),
-  info: document.getElementById('info'),
-  start: document.getElementById('start'),
+  score: document.querySelector( '#score strong' ),
+  question: document.getElementById( 'question' ),
+  response: document.querySelector( '#response' ),
+  result: document.getElementById( 'result' ),
+  info: document.getElementById( 'info' ),
+  start: document.getElementById( 'start' ),
 
   // This function grabs the element and replaces its
   // content and attributes according to new values passed.
@@ -20,11 +21,35 @@ const view = {
     }
     target.innerHTML = content;
   },
+
   show( element ) {
     element.style.display = 'block';
   },
+
   hide( element ) {
     element.style.display = 'none';
+  },
+
+  setup() {
+    this.show( this.question );
+    this.show( this.response );
+    this.show( this.result );
+    this.hide( this.start );
+    this.render( this.score, game.score );
+    this.render( this.result, '' );
+    this.render( this.info, '' );
+    this.resetForm();
+  },
+
+  resetForm() {
+    this.response.answer.value = '';
+    this.response.answer.focus();
+  },
+
+  tearDown() {
+    this.hide( this.question );
+    this.hide( this.response );
+    this.show( this.start );
   }
 
 };
@@ -32,45 +57,46 @@ const view = {
 const game = {
 
   start( quiz ) {
+    this.score = 0;
     this.questions = [...quiz];
-    this.score = 0; // initialize score
-
-    view.hide(view.start); // hiding the starting button
-  
-    // Iterating over questions, main game loop
-    for ( const question of this.questions ) {
-      this.question = question;
-      this.ask();
-    } // END of the main game loop 
-
-    this.gameOver();
+    view.setup();
+    this.ask();
   },
 
-  ask() {
-    const question = `What is ${this.question.name}'s real name?`;
-    view.render(view.question, question);
-    const response = prompt(question);
-    this.check(response);
+  ask( name ) {
+    if ( this.questions.length > 0 ) {
+      this.question = this.questions.pop(); // grab the actual question and remove 
+                                            // it from the array of questions
+      const question = `What is ${ this.question.name }'s real name?`;
+      view.render( view.question, question );
+    } else {
+      this.gameOver();
+    }
   },
 
-  check( response ) {
+  check( event ) {
+    event.preventDefault();
+    const response = view.response.answer.value;
     const answer = this.question.realName;
     if ( response === answer ) {
       view.render( view.result, 'Correct!', { 'class': 'correct' } );
-      alert( 'Correct!' );
       this.score++;
       view.render( view.score, this.score );
     } else {
       view.render( view.result, `Wrong! The correct answer was ${answer}.`, { 'class': 'wrong' } );
-      alert( `Wrong! The correct answer was ${answer}.` );
     }
+    view.resetForm();
+    this.ask();
   },
 
   gameOver() {
-    view.show(view.start); // showing the starting button again
     view.render( view.info, `Game Over, you scored ${this.score} point${this.score !== 1 ? 's' : ''}.` );
+    view.tearDown();
   }
+
 }
 
 // Staring the game.
 view.start.addEventListener( 'click', () => game.start( quiz ), false );
+view.response.addEventListener( 'submit', (event) => game.check(event), false );
+view.hide( view.response );

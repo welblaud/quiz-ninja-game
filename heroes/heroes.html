@@ -3,11 +3,18 @@
   <head>
     <meta charset='utf-8'>
     <title>Hero Form</title>
+    <style>
+      .error {
+        background: #f99;
+        border: #900 1px solid;
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <form id='hero'>
       <label for='heroName'>Name:
-        <input type='text' id='heroName' name='heroName' autofocus placeholder='Your Super Hero Name' maxlength='32'>
+        <input type='text' id='heroName' name='heroName' autofocus placeholder='Your Super Hero Name' maxlength='32' required>
       </label>
       <label for='realName'>Real Name:
         <input type='password' id='realName' name='realName'>
@@ -54,7 +61,7 @@
       <br>
       <label for='origin'>Origin Story:
         <textarea id='origin' name='origin' rows='20' cols='60'></textarea>
-      <button type='submit'>Submit</button>
+      <button type='submit' name='submit' id='submit'>Submit</button>
     </form>
     <script src='main.js'></script>
   </body>
